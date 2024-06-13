@@ -44,7 +44,33 @@ public final class DemoCommandRegistry implements CommandRegistry {
 MinecraftServer.getCommandManager().registerCommandRegistry(new DemoCommandRegistry());
 // ...
 ```
+
+### Event system rework ➔
+
+#### A simple overhaul for a cleaner class structure
+
+```java
+public final class DemoEventRegistry implements ListenerRegistry {
+
+    @EventHandler
+    //or
+    @RegisterListener
+    public void playerSpawnEvent(PlayerSpawnEvent event){
+        if(event.isFirstSpawn()){
+            event.getPlayer().sendMessage("Hello World!");
+        }
+    }
+
+}
+```
+```java
+// ...
+MinecraftServer.getGlobalEventHandler().addListenerRegistry(new DemoEventRegistry());
+// ...
+```
+
 <div align="center">
+
 
 #### We are working on even more features...
 

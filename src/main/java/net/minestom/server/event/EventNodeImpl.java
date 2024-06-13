@@ -1,6 +1,9 @@
 package net.minestom.server.event;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import de.aredblock.polygonmc.event.EventHandler;
+import de.aredblock.polygonmc.event.ListenerRegistry;
+import de.aredblock.polygonmc.event.RegisterListener;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.ServerFlag;
 import net.minestom.server.event.trait.RecursiveEvent;
@@ -127,6 +130,26 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
             childImpl.parent = null;
             childImpl.invalidateEventsFor(this);
         }
+        return this;
+    }
+
+    public EventNode<T> addListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
+        var methods = Arrays.stream(listenerRegistry.getClass().getDeclaredMethods()).toList();
+
+        methods.forEach(method -> {
+            if(method.isAnnotationPresent(RegisterListener.class) || method.isAnnotationPresent(EventHandler.class)){
+                var eventType = (Class<? extends T>) method.getParameters()[0].getType();
+
+                addListener(eventType, event -> {
+                    try {
+                        method.invoke(listenerRegistry, event);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        });
+
         return this;
     }
 

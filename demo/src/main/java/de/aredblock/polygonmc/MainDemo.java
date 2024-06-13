@@ -1,12 +1,13 @@
 package de.aredblock.polygonmc;
 
 import de.aredblock.polygonmc.commands.DemoCommandRegistry;
+import de.aredblock.polygonmc.events.DemoEventRegistry;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
 
-public class MainDemo {
+public final class MainDemo {
 
     public static void main(String[] args) {
         var minecraftServer = MinecraftServer.init();
@@ -25,6 +26,8 @@ public class MainDemo {
         });
 
         MinecraftServer.getCommandManager().registerCommandRegistry(new DemoCommandRegistry());
+
+        MinecraftServer.getGlobalEventHandler().addListenerRegistry(new DemoEventRegistry());
 
         minecraftServer.start("0.0.0.0", 25565);
     }
