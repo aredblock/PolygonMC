@@ -1,5 +1,9 @@
 package net.minestom.server.command;
 
+import de.aredblock.polygonmc.commands.CommandInput;
+import de.aredblock.polygonmc.commands.CommandRegistry;
+import de.aredblock.polygonmc.commands.RegisterCommand;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.command.builder.CommandDispatcher;
 import net.minestom.server.command.builder.CommandResult;
@@ -34,6 +38,30 @@ public final class CommandManager {
     private CommandCallback unknownCommandCallback;
 
     public CommandManager() {
+    }
+
+    /**
+     * @param commandRegistry
+     */
+    public void registerCommandRegistry(@NotNull CommandRegistry commandRegistry) {
+        var methods = Arrays.stream(commandRegistry.getClass().getDeclaredMethods()).toList();
+
+        methods.forEach(method -> {
+            if(method.isAnnotationPresent(RegisterCommand.class)){
+                var annotation = method.getAnnotation(RegisterCommand.class);
+
+                var command = new Command(annotation.alias());
+                command.setDefaultExecutor((commandSender, commandContext) -> {
+                    try {
+                        method.invoke(commandRegistry,
+                                new CommandInput(commandSender, commandContext));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                MinecraftServer.getCommandManager().register(command);
+            }
+        });
     }
 
     /**
