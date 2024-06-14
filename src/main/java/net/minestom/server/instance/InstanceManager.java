@@ -5,6 +5,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventDispatcher;
 import net.minestom.server.event.instance.InstanceRegisterEvent;
 import net.minestom.server.event.instance.InstanceUnregisterEvent;
+import net.minestom.server.instance.anvil.AnvilLoader;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.registry.Registries;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -43,6 +45,12 @@ public final class InstanceManager {
                 unit.modifier().fillHeight(0, height, Block.GRASS_BLOCK));
 
         return instanceContainer;
+    }
+
+    public Instance generateFromFile(File worldFolder) {
+        var instance = MinecraftServer.getInstanceManager().createInstanceContainer();
+        instance.setChunkLoader(new AnvilLoader(worldFolder.getPath()));
+        return instance;
     }
 
     /**
