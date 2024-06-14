@@ -42,7 +42,7 @@ public final class InstanceManager {
         var instanceContainer = MinecraftServer.getInstanceManager().createInstanceContainer();
 
         instanceContainer.setGenerator(unit ->
-                unit.modifier().fillHeight(0, height, Block.GRASS_BLOCK));
+                unit.modifier().fillHeight(0, height, block));
 
         return instanceContainer;
     }
