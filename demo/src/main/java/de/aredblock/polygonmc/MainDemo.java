@@ -1,6 +1,8 @@
 package de.aredblock.polygonmc;
 
-import de.aredblock.polygonmc.commands.DemoCommandRegistry;
+import de.aredblock.polygonmc.commands.CommandInput;
+import de.aredblock.polygonmc.commands.CommandRegistry;
+import de.aredblock.polygonmc.commands.RegisterCommand;
 import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
@@ -11,7 +13,7 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
 
-public final class MainDemo implements ListenerRegistry {
+public final class MainDemo implements ListenerRegistry, CommandRegistry {
 
     private static final Region spawnRegion = new Region(new Pos(-10, 30, -10), new Pos(10, 40, 10));
 
@@ -22,12 +24,20 @@ public final class MainDemo implements ListenerRegistry {
 
         INSTANCE_CONTAINER = (InstanceContainer) MinecraftServer.getInstanceManager().generateFlat(Block.STONE);
 
-        MinecraftServer.getCommandManager().registerCommandRegistry(new DemoCommandRegistry());
+        MinecraftServer.getCommandManager().registerCommandRegistry(new MainDemo());
         MinecraftServer.getGlobalEventHandler().addListenerRegistry(new MainDemo());
 
         minecraftServer.start("0.0.0.0", 25565);
     }
 
+    //COMMANDS
+    @RegisterCommand(alias = "helloWorld")
+    public void demoCommand(CommandInput input){
+        input.getSender().sendMessage("Hello World!");
+    }
+
+
+    //EVENTS
     @RegisterListener
     public void onAsyncPlayerConfigurationEvent(AsyncPlayerConfigurationEvent event){
         final var player = event.getPlayer();
