@@ -5,6 +5,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventDispatcher;
 import net.minestom.server.event.instance.InstanceRegisterEvent;
 import net.minestom.server.event.instance.InstanceUnregisterEvent;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.registry.Registries;
 import net.minestom.server.utils.validate.Check;
@@ -29,6 +30,19 @@ public final class InstanceManager {
 
     public InstanceManager(@NotNull Registries registries) {
         this.registries = registries;
+    }
+
+    public Instance generateFlat(Block block) {
+        return generateFlat(block, 40);
+    }
+
+    public Instance generateFlat(Block block, int height) {
+        var instanceContainer = MinecraftServer.getInstanceManager().createInstanceContainer();
+
+        instanceContainer.setGenerator(unit ->
+                unit.modifier().fillHeight(0, height, Block.GRASS_BLOCK));
+
+        return instanceContainer;
     }
 
     /**

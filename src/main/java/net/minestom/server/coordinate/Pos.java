@@ -72,6 +72,10 @@ public record Pos(double x, double y, double z, float yaw, float pitch) implemen
         return withView(pos.yaw(), pos.pitch());
     }
 
+    public @NotNull Pos center() {
+        return new Pos(x + 0.5, y, z + 0.5);
+    }
+
     /**
      * Sets the yaw and pitch to point
      * in the direction of the point.
