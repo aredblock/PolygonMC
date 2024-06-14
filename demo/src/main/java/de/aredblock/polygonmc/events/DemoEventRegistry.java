@@ -3,17 +3,15 @@ package de.aredblock.polygonmc.events;
 import de.aredblock.polygonmc.event.EventHandler;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
-import net.minestom.server.event.player.PlayerSpawnEvent;
+import de.aredblock.polygonmc.events.player.PlayerLoginEvent;
 
 public final class DemoEventRegistry implements ListenerRegistry {
 
     @EventHandler
     //or
     @RegisterListener
-    public void playerSpawnEvent(PlayerSpawnEvent event){
-        if(event.isFirstSpawn()){
-            event.getPlayer().sendMessage("Hello World!");
-        }
+    public void onPlayerLoginEvent(PlayerLoginEvent event){
+        event.getPlayer().sendMessage("Hello World!");
     }
 
 }

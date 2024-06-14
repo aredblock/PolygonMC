@@ -1,5 +1,6 @@
 package net.minestom.server.entity;
 
+import de.aredblock.polygonmc.events.player.PlayerLoginEvent;
 import it.unimi.dsi.fastutil.longs.LongArrayPriorityQueue;
 import it.unimi.dsi.fastutil.longs.LongPriorityQueue;
 import net.kyori.adventure.audience.MessageType;
@@ -768,7 +769,13 @@ public class Player extends LivingEntity implements CommandSender, Localizable, 
             sendPacket(new ChangeGameStatePacket(ChangeGameStatePacket.Reason.LEVEL_CHUNKS_LOAD_START, 0));
         }
 
-        EventDispatcher.call(new PlayerSpawnEvent(this, instance, firstSpawn));
+        var event = new PlayerSpawnEvent(this, instance, firstSpawn);
+
+        if(event.isFirstSpawn()){
+            EventDispatcher.call(new PlayerLoginEvent(this, event));
+        }
+
+        EventDispatcher.call(event);
     }
 
     @ApiStatus.Internal
