@@ -8,7 +8,6 @@ plugins {
 dependencies {
     implementation(rootProject)
 
-
     runtimeOnly(libs.bundles.logback)
 }
 

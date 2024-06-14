@@ -1,3 +1,3 @@
 rootProject.name = "minestom"
 
-include("demo")
+include("polygonmc-demo")

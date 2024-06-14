@@ -1,0 +1,5 @@
+{
+  "name": "DemoAddon",
+  "addonId": "demoaddon",
+  "entrypoint": "de.aredblock.polygonmc.addon.DemoAddon"
+}

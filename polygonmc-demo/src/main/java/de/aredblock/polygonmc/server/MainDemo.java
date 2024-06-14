@@ -1,4 +1,4 @@
-package de.aredblock.polygonmc;
+package de.aredblock.polygonmc.server;
 
 import de.aredblock.polygonmc.commands.CommandInput;
 import de.aredblock.polygonmc.commands.CommandRegistry;
