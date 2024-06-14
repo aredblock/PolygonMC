@@ -1,15 +1,19 @@
 package de.aredblock.polygonmc;
 
 import de.aredblock.polygonmc.commands.DemoCommandRegistry;
+import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
+import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
 
 public final class MainDemo implements ListenerRegistry {
+
+    private static final Region spawnRegion = new Region(new Pos(-10, 30, -10), new Pos(10, 40, 10));
 
     private static InstanceContainer INSTANCE_CONTAINER;
 
@@ -29,6 +33,15 @@ public final class MainDemo implements ListenerRegistry {
         final var player = event.getPlayer();
         event.setSpawningInstance(INSTANCE_CONTAINER);
         player.setRespawnPoint(new Pos(0, 42, 0).center());
+    }
+
+    @RegisterListener
+    public void onPlayerBlockBreakEvent(PlayerBlockBreakEvent event){
+        var pos = new Pos(event.getBlockPosition());
+
+        if(spawnRegion.isInRegion(pos)){
+            event.setCancelled(true);
+        }
     }
 
 }
