@@ -17,15 +17,10 @@ final class AddonConfigLoader {
     class Config {
 
         private String name;
-        private String addonId;
         private String entrypoint;
 
         public String getName() {
             return name;
-        }
-
-        public String getAddonId() {
-            return addonId;
         }
 
         public String getEntrypoint() {

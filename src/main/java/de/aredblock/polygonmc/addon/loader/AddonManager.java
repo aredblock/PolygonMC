@@ -1,6 +1,7 @@
 package de.aredblock.polygonmc.addon.loader;
 
 import de.aredblock.polygonmc.addon.api.Addon;
+import de.aredblock.polygonmc.addon.messaging.AddonMessageManager;
 
 import java.io.File;
 import java.net.URL;
@@ -11,13 +12,14 @@ import java.util.List;
 import java.util.Objects;
 
 //TODO: Add reload method
-public final class AddonLoader {
+public final class AddonManager {
 
     private final File addonsFolder = new File("addons");
+    private final AddonMessageManager addonMessageManager = new AddonMessageManager();
 
     private final List<Addon> addons = new ArrayList<>();
 
-    public AddonLoader() {
+    public AddonManager() {
         if (!addonsFolder.exists()) {
             addonsFolder.mkdirs();
         }
@@ -53,6 +55,10 @@ public final class AddonLoader {
 
     public List<Addon> getAddons() {
         return addons;
+    }
+
+    public AddonMessageManager getAddonMessageManager() {
+        return addonMessageManager;
     }
 
 }

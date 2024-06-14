@@ -1,6 +1,6 @@
 package net.minestom.server;
 
-import de.aredblock.polygonmc.addon.loader.AddonLoader;
+import de.aredblock.polygonmc.addon.loader.AddonManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.minestom.server.advancements.AdvancementManager;
 import net.minestom.server.adventure.bossbar.BossBarManager;
@@ -74,7 +74,7 @@ public final class MinecraftServer implements MinecraftConstants {
     private static String brandName = "PolygonMC";
     private static Difficulty difficulty = Difficulty.NORMAL;
 
-    private static AddonLoader addonLoader = new AddonLoader();
+    private static AddonManager addonManager = new AddonManager();
 
     public static MinecraftServer init() {
         updateProcess();
@@ -129,7 +129,7 @@ public final class MinecraftServer implements MinecraftConstants {
      *
      * @return AddonLoader
      */
-    public static @NotNull AddonLoader getAddonLoader() {return addonLoader;}
+    public static @NotNull AddonManager getAddonManager() {return addonManager;}
 
     /**
      * Changes the server difficulty and send the appropriate packet to all connected clients.
@@ -339,7 +339,7 @@ public final class MinecraftServer implements MinecraftConstants {
      */
     public void start(@NotNull SocketAddress address) {
         //load addons
-        addonLoader.load();
+        addonManager.load();
 
         serverProcess.start(address);
         new TickSchedulerThread(serverProcess).start();
@@ -354,7 +354,7 @@ public final class MinecraftServer implements MinecraftConstants {
      */
     public static void stopCleanly() {
         //shutdown addons
-        addonLoader.shutdown();
+        addonManager.shutdown();
 
         serverProcess.stop();
     }
