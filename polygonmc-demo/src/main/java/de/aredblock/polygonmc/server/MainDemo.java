@@ -6,16 +6,19 @@ import de.aredblock.polygonmc.commands.RegisterCommand;
 import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
+import de.aredblock.polygonmc.vanilla.schematic.Schematic;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
+import java.io.File;
 
 public final class MainDemo implements ListenerRegistry, CommandRegistry {
 
-    private static final Region spawnRegion = new Region(new Pos(-10, 30, -10), new Pos(10, 40, 10));
+    private static final Region spawnRegion = new Region(new Pos(-10, 30, -10), new Pos(10, 60, 10));
 
     private static InstanceContainer INSTANCE_CONTAINER;
 
@@ -34,6 +37,18 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
     @RegisterCommand(alias = "helloWorld")
     public void demoCommand(CommandInput input){
         input.getSender().sendMessage("Hello World!");
+    }
+
+    @RegisterCommand(alias = "schematicDemo")
+    public void schematicCommand(CommandInput input){
+        if(input.getSender() instanceof Player player){
+            try {
+                var schematic = new Schematic(new File("demo.schem"));
+                schematic.paste(player.getInstance(), player.getPosition());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
 
