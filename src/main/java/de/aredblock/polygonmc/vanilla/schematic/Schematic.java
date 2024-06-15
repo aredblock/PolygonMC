@@ -19,6 +19,8 @@ public final class Schematic {
     private static final BinaryTagIO.Reader NBT_READER = BinaryTagIO.unlimitedReader();
     private final CompoundBinaryTag tag;
 
+    private SchematicOptions options = new SchematicOptions(false);
+
     private CompoundBinaryTag palette;
 
     private int width;
@@ -45,7 +47,7 @@ public final class Schematic {
         int z = 0;
 
         for (byte targetByte : blockArray) {
-            Block block = blocks[targetByte];
+            var block = blocks[targetByte];
             var blockPosition = new Vec(x, y, z).add(offset);
 
             placementBlocks.add(new PlacementBlock(blockPosition.asPosition(), block));
@@ -61,6 +63,10 @@ public final class Schematic {
 
         placementBlocks.forEach(placementBlock -> {
             var placementPos = placementBlock.pos().add(pos);
+
+            if(options.isAirPlacement() && placementBlock.block().isAir()){
+                return;
+            }
 
             instance.setBlock(placementPos, placementBlock.block());
         });
@@ -102,6 +108,14 @@ public final class Schematic {
     private CompoundBinaryTag loadFromFile(File file) throws Exception {
         var targetStream = new FileInputStream(file);
         return NBT_READER.read(targetStream, BinaryTagIO.Compression.GZIP);
+    }
+
+    public Schematic updateOption(SchematicOption option, Object value){
+        if(option == SchematicOption.AIRPLACEMENT){
+            options.setAirPlacement((Boolean) value);
+        }
+
+        return this;
     }
 
     public int getWidth() {

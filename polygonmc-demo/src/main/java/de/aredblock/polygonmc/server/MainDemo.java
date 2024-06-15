@@ -7,6 +7,7 @@ import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
 import de.aredblock.polygonmc.vanilla.schematic.Schematic;
+import de.aredblock.polygonmc.vanilla.schematic.SchematicOption;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
@@ -43,7 +44,8 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
     public void schematicCommand(CommandInput input){
         if(input.getSender() instanceof Player player){
             try {
-                var schematic = new Schematic(new File("demo.schem"));
+                var schematic = new Schematic(new File("demo.schem"))
+                        .updateOption(SchematicOption.AIRPLACEMENT, false);
                 schematic.paste(player.getInstance(), player.getPosition());
             }catch (Exception e){
                 e.printStackTrace();
