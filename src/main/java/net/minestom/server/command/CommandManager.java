@@ -4,10 +4,9 @@ import de.aredblock.polygonmc.commands.CommandInput;
 import de.aredblock.polygonmc.commands.CommandRegistry;
 import de.aredblock.polygonmc.commands.RegisterCommand;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.command.builder.Command;
-import net.minestom.server.command.builder.CommandDispatcher;
-import net.minestom.server.command.builder.CommandResult;
-import net.minestom.server.command.builder.ParsedCommand;
+import net.minestom.server.command.builder.*;
+import net.minestom.server.command.builder.arguments.Argument;
+import net.minestom.server.command.builder.arguments.ArgumentType;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.EventDispatcher;
 import net.minestom.server.event.player.PlayerCommandEvent;
@@ -17,6 +16,7 @@ import net.minestom.server.utils.validate.Check;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -46,11 +46,11 @@ public final class CommandManager {
     public void registerCommandRegistry(@NotNull CommandRegistry commandRegistry) {
         var methods = Arrays.stream(commandRegistry.getClass().getDeclaredMethods()).toList();
 
-        methods.forEach(method -> {
-            if(method.isAnnotationPresent(RegisterCommand.class)){
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(RegisterCommand.class)) {
                 var annotation = method.getAnnotation(RegisterCommand.class);
+                var command = new Command(annotation.name(), annotation.aliases());
 
-                var command = new Command(annotation.alias());
                 command.setDefaultExecutor((commandSender, commandContext) -> {
                     try {
                         method.invoke(commandRegistry,
@@ -59,9 +59,10 @@ public final class CommandManager {
                         e.printStackTrace();
                     }
                 });
+
                 MinecraftServer.getCommandManager().register(command);
             }
-        });
+        }
     }
 
     /**

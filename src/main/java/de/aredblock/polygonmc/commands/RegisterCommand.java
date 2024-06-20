@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RegisterCommand {
 
-    String alias();
+    String name();
+    String[] aliases() default "";
 
 }

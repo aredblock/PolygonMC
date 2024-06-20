@@ -35,12 +35,12 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
     }
 
     //COMMANDS
-    @RegisterCommand(alias = "helloWorld")
+    @RegisterCommand(name = "helloWorld")
     public void demoCommand(CommandInput input){
         input.getSender().sendMessage("Hello World!");
     }
 
-    @RegisterCommand(alias = "schematicDemo")
+    @RegisterCommand(name = "schematicDemo", aliases = { "schematic" })
     public void schematicCommand(CommandInput input){
         if(input.getSender() instanceof Player player){
             try {
