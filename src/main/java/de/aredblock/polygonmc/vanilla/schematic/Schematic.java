@@ -13,6 +13,8 @@ import net.minestom.server.utils.validate.Check;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public final class Schematic {
 
@@ -42,24 +44,8 @@ public final class Schematic {
     public void paste(Instance instance, Pos pos){
         var placementBlocks = new ArrayList<PlacementBlock>();
 
-        int x = 0;
-        int y = 0;
-        int z = 0;
-
-        for (byte targetByte : blockArray) {
-            var block = blocks[targetByte];
-            var blockPosition = new Vec(x, y, z).add(offset);
-
-            placementBlocks.add(new PlacementBlock(blockPosition.asPosition(), block));
-
-            if (++z >= length) {
-                z = 0;
-                if (++x >= width) {
-                    x = 0;
-                    ++y;
-                }
-            }
-        }
+        forEach((targetBlock, targetPos) ->
+                placementBlocks.add(new PlacementBlock(targetPos, targetBlock)));
 
         placementBlocks.forEach(placementBlock -> {
             var placementPos = placementBlock.pos().add(pos);
@@ -108,6 +94,27 @@ public final class Schematic {
     private CompoundBinaryTag loadFromFile(File file) throws Exception {
         var targetStream = new FileInputStream(file);
         return NBT_READER.read(targetStream, BinaryTagIO.Compression.GZIP);
+    }
+
+    public void forEach(SchematicRunnable function){
+        int x = 0;
+        int y = 0;
+        int z = 0;
+
+        for (byte targetByte : blockArray) {
+            var block = blocks[targetByte];
+            var blockPosition = new Vec(x, y, z).add(offset);
+
+            function.apply(block, blockPosition.asPosition());
+
+            if (++z >= length) {
+                z = 0;
+                if (++x >= width) {
+                    x = 0;
+                    ++y;
+                }
+            }
+        }
     }
 
     public Schematic updateOption(SchematicOption option, Object value){
