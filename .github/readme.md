@@ -96,7 +96,7 @@ public final class DemoCommandRegistry implements CommandRegistry {
         input.getSender().sendMessage("DEMO");
     }
 
-    @RegisterCommand(alias = "helloWorld")
+    @RegisterCommand(alias = "helloWorld", aliases = { "hello" })
     public void helloWorld(CommandInput input){
         input.getSender().sendMessage("Hello World!");
     }
