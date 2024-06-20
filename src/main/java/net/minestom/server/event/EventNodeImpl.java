@@ -133,7 +133,7 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
         return this;
     }
 
-    public EventNode<T> addListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
+    public EventNode<T> registerListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
         var methods = Arrays.stream(listenerRegistry.getClass().getDeclaredMethods()).toList();
 
         methods.forEach(method -> {
@@ -151,6 +151,13 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
         });
 
         return this;
+    }
+
+    /** Rather use registerEventRegistry() to avoid problems after the planned removal of this method
+     * @deprecated This method will be removed in the next updates
+     */
+    public @Deprecated EventNode<T> addListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
+        return registerListenerRegistry(listenerRegistry);
     }
 
     @Override

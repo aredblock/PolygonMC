@@ -29,7 +29,7 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
         INSTANCE_CONTAINER = (InstanceContainer) MinecraftServer.getInstanceManager().generateFlat(Block.STONE);
 
         MinecraftServer.getCommandManager().registerCommandRegistry(new MainDemo());
-        MinecraftServer.getGlobalEventHandler().addListenerRegistry(new MainDemo());
+        MinecraftServer.getGlobalEventHandler().registerListenerRegistry(new MainDemo());
 
         minecraftServer.start("0.0.0.0", 25565);
     }

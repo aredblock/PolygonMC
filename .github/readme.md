@@ -134,7 +134,7 @@ public final class DemoEventRegistry implements ListenerRegistry {
 
 ```java
 // ...
-MinecraftServer.getGlobalEventHandler().addListenerRegistry(new DemoEventRegistry());
+MinecraftServer.getGlobalEventHandler().registerListenerRegistry(new DemoEventRegistry());
 // ...
 ```
 [> MainDemo.class](https://github.com/aredblock/PolygonMC/blob/master/polygonmc-demo/src/main/java/de/aredblock/polygonmc/server/MainDemo.java)
