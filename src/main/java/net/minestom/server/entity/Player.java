@@ -437,7 +437,7 @@ public class Player extends LivingEntity implements CommandSender, Localizable, 
 
         // Eating animation
         if (isUsingItem()) {
-            if (instance.getWorldAge() - startItemUseTime >= itemUseTime) {
+            if (instance.getWorldAge() - startItemUseTime >= itemUseTime && itemUseTime > 0) {
                 triggerStatus((byte) 9); // Mark item use as finished
                 ItemUpdateStateEvent itemUpdateStateEvent = callItemUpdateStateEvent(itemUseHand);
 
@@ -1526,17 +1526,14 @@ public class Player extends LivingEntity implements CommandSender, Localizable, 
      *
      * @param packet the packet to send
      */
-    @ApiStatus.Experimental
     public void sendPacket(@NotNull SendablePacket packet) {
         this.playerConnection.sendPacket(packet);
     }
 
-    @ApiStatus.Experimental
     public void sendPackets(@NotNull SendablePacket... packets) {
         this.playerConnection.sendPackets(packets);
     }
 
-    @ApiStatus.Experimental
     public void sendPackets(@NotNull Collection<SendablePacket> packets) {
         this.playerConnection.sendPackets(packets);
     }
