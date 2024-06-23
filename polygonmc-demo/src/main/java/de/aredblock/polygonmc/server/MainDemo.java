@@ -6,6 +6,7 @@ import de.aredblock.polygonmc.commands.RegisterCommand;
 import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
+import de.aredblock.polygonmc.events.EventCalledEvent;
 import de.aredblock.polygonmc.vanilla.schematic.Schematic;
 import de.aredblock.polygonmc.vanilla.schematic.SchematicOption;
 import net.minestom.server.MinecraftServer;
@@ -69,6 +70,11 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
         if(spawnRegion.isInRegion(pos)){
             event.setCancelled(true);
         }
+    }
+
+    @RegisterListener
+    public void onEventCalledEvent(EventCalledEvent<?> event){
+        System.out.println(event.getCalledEvent().getClass().getSimpleName());
     }
 
 }

@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import de.aredblock.polygonmc.event.EventHandler;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
+import de.aredblock.polygonmc.events.EventCalledEvent;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.ServerFlag;
 import net.minestom.server.event.trait.RecursiveEvent;
@@ -351,6 +352,10 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
 
         @Override
         public void call(@NotNull E event) {
+            if(!event.getClass().equals(EventCalledEvent.class)){
+                MinecraftServer.getGlobalEventHandler().call(new EventCalledEvent<E>(event));
+            }
+
             final Consumer<E> listener = updatedListener();
             if (listener == null) return;
             try {
