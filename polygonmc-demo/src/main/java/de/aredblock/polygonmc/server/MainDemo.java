@@ -74,7 +74,7 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
 
     @RegisterListener
     public void onEventCalledEvent(EventCalledEvent<?> event){
-        System.out.println(event.getCalledEvent().getClass().getSimpleName());
+        //System.out.println(event.getCalledEvent().getClass().getSimpleName());
     }
 
 }
