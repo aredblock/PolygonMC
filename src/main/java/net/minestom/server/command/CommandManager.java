@@ -49,7 +49,12 @@ public final class CommandManager {
         for (Method method : methods) {
             if (method.isAnnotationPresent(RegisterCommand.class)) {
                 var annotation = method.getAnnotation(RegisterCommand.class);
-                var command = new Command(annotation.name(), annotation.aliases());
+                var command = new Command(annotation.name());
+
+                if(!Arrays.equals(annotation.aliases(), new String[]{""})){
+                    command = new Command(annotation.name(), annotation.aliases());
+                }
+
 
                 command.setDefaultExecutor((commandSender, commandContext) -> {
                     try {
