@@ -73,7 +73,7 @@ public record Pos(double x, double y, double z, float yaw, float pitch) implemen
     }
 
     public @NotNull Pos center() {
-        return new Pos(x + 0.5, y, z + 0.5);
+        return withCoord(x + 0.5, y, z + 0.5);
     }
 
     /**
