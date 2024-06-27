@@ -66,11 +66,8 @@ dependencies {
 <br>
 
 > [!NOTE]
-> #### You can get the recommended version [here](https://jitpack.io/#aredblock/PolygonMC/0ee92a54bc).
-
-> [!NOTE]
 > #### You can get the latest version [here](https://jitpack.io/#aredblock/PolygonMC). <br>
-> Attention! The last builds that were uploaded after the recommended version have not been checked for errors and are most likely not supported by the PolygonMC runtime!
+> If you use the PolygonMC runtime, make sure that your runtime has implemented a current version of the api to be able to execute new addons!
 
 <div align="center">
 

@@ -1,7 +1,9 @@
 package de.aredblock.polygonmc.addon.loader;
 
 import de.aredblock.polygonmc.addon.api.Addon;
+import de.aredblock.polygonmc.addon.api.event.AddonLoadedEvent;
 import de.aredblock.polygonmc.addon.messaging.AddonMessageManager;
+import net.minestom.server.MinecraftServer;
 
 import java.io.File;
 import java.net.URL;
@@ -40,13 +42,19 @@ public final class AddonManager {
                 var clazz = Class.forName(config.getEntrypoint(), true, classLoader);
                 var addon = (Addon) clazz.newInstance();
 
-                addon.onInitialize();
-                addons.add(addon);
+                initialiseAddon(addon);
             }catch (Exception e){
                 e.printStackTrace();
             }
         });
 
+    }
+
+    public void initialiseAddon(Addon addon){
+        addon.onInitialize();
+        addons.add(addon);
+
+        MinecraftServer.getGlobalEventHandler().call(new AddonLoadedEvent(addon));
     }
 
     public void shutdown(){
