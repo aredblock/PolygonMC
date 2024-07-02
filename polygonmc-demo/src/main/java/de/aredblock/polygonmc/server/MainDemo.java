@@ -7,12 +7,14 @@ import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
 import de.aredblock.polygonmc.events.EventCalledEvent;
+import de.aredblock.polygonmc.vanilla.entity.FakePlayer;
 import de.aredblock.polygonmc.vanilla.schematic.Schematic;
 import de.aredblock.polygonmc.vanilla.schematic.SchematicOption;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
+import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
@@ -31,6 +33,8 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
 
         MinecraftServer.getCommandManager().registerCommandRegistry(new MainDemo());
         MinecraftServer.getGlobalEventHandler().registerListenerRegistry(new MainDemo());
+
+        MojangAuth.init();
 
         minecraftServer.start("0.0.0.0", 25565);
     }
@@ -54,6 +58,19 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
         }
     }
 
+    @RegisterCommand(name = "fakePlayer", aliases = { "spawnNpc" })
+    public void fakePlayerCommand(CommandInput input){
+        if(input.isFromPlayer()){
+            var player = input.getPlayer();
+            var location = player.getPosition();
+
+            FakePlayer.builder()
+                    .skin(player.getSkin())
+                    .instance(player.getInstance())
+                    .position(location)
+                    .build();
+        }
+    }
 
     //EVENTS
     @RegisterListener
