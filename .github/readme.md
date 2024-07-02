@@ -83,7 +83,7 @@ dependencies {
 - [Regions](#regions-)
 - [Instance improvements](#instance-improvements-)
 - [Schematics](#schematics-)
-- [FakePlayer](#schematics-)
+- [FakePlayer](#fakeplayer-)
 ***
 
 ### Command system rework ➔
