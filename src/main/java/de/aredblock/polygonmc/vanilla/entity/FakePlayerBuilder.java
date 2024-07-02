@@ -1,5 +1,6 @@
 package de.aredblock.polygonmc.vanilla.entity;
 
+import de.aredblock.polygonmc.coordinate.Location;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.instance.Instance;
@@ -33,6 +34,13 @@ public final class FakePlayerBuilder {
 
     public FakePlayerBuilder position(@NotNull Pos position){
         this.position = position;
+        autoInitialisation = true;
+        return this;
+    }
+
+    public FakePlayerBuilder location(@NotNull Location location){
+        this.position = location.getPosition();
+        this.instance = location.getInstance();
         autoInitialisation = true;
         return this;
     }

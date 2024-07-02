@@ -3,6 +3,7 @@ package de.aredblock.polygonmc.server;
 import de.aredblock.polygonmc.commands.CommandInput;
 import de.aredblock.polygonmc.commands.CommandRegistry;
 import de.aredblock.polygonmc.commands.RegisterCommand;
+import de.aredblock.polygonmc.coordinate.Location;
 import de.aredblock.polygonmc.coordinate.Region;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
@@ -72,12 +73,10 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
     public void fakePlayerCommand(CommandInput input){
         if(input.isFromPlayer()){
             var player = input.getPlayer();
-            var location = player.getPosition();
 
             FakePlayer.builder()
                     .skin(player.getSkin())
-                    .instance(player.getInstance())
-                    .position(location)
+                    .location(player.getLocation())
                     .build();
         }
     }
