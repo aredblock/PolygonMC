@@ -83,6 +83,7 @@ dependencies {
 - [Regions](#regions-)
 - [Instance improvements](#instance-improvements-)
 - [Schematics](#schematics-)
+- [FakePlayer](#schematics-)
 ***
 
 ### Command system rework ➔
@@ -235,6 +236,22 @@ schematic.paste(player.getInstance(), player.getPosition());
 // ...
 ```
 [> DemoAddon.class](https://github.com/aredblock/PolygonMC/blob/master/polygonmc-demo/src/main/java/de/aredblock/polygonmc/addon/DemoAddon.java)
+
+<br>
+
+### FakePlayer ➔
+
+#### With the FakePlayer you can spawn "NPCs" in your world!
+```java
+// ...
+FakePlayer.builder()
+    .skin(player.getSkin())
+    .instance(player.getInstance())
+    .position(location)
+    .build();
+// ...
+```
+[> MainDemo.class](https://github.com/aredblock/PolygonMC/blob/master/polygonmc-demo/src/main/java/de/aredblock/polygonmc/server/MainDemo.java)
 
 <br>
 
