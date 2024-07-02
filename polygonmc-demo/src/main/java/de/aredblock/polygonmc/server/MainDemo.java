@@ -45,6 +45,16 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
         input.getSender().sendMessage("Hello World!");
     }
 
+    @RegisterCommand(name = "pwd")
+    public void pwdCommand(CommandInput input){
+        if(input.isFromPlayer()){
+            var player = input.getPlayer();
+            var location = player.getLocation();
+
+            player.sendMessage(location.toString());
+        }
+    }
+
     @RegisterCommand(name = "schematicDemo", aliases = { "schematic" })
     public void schematicCommand(CommandInput input){
         if(input.getSender() instanceof Player player){

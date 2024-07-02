@@ -1,5 +1,6 @@
 package net.minestom.server.entity;
 
+import de.aredblock.polygonmc.coordinate.Location;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -306,6 +307,11 @@ public class Entity implements Viewable, Tickable, Schedulable, Snapshotable, Ev
             endCallback.run();
             return AsyncUtils.empty();
         }
+    }
+
+    public void teleport(@NotNull Pos position, @NotNull Instance instance){
+        setInstance(instance);
+        teleport(position);
     }
 
     public @NotNull CompletableFuture<Void> teleport(@NotNull Pos position) {
@@ -1308,6 +1314,10 @@ public class Entity implements Viewable, Tickable, Schedulable, Snapshotable, Ev
             if (this instanceof Player player) player.sendChunkUpdates(newChunk);
             refreshCurrentChunk(newChunk);
         }
+    }
+
+    public @NotNull Location getLocation(){
+        return Location.of(getPosition(), getInstance());
     }
 
     /**
