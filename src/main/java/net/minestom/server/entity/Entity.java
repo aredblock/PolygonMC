@@ -309,6 +309,10 @@ public class Entity implements Viewable, Tickable, Schedulable, Snapshotable, Ev
         }
     }
 
+    public void teleport(@NotNull Location location){
+        teleport(location.getPosition(), location.getInstance());
+    }
+
     public void teleport(@NotNull Pos position, @NotNull Instance instance){
         setInstance(instance);
         teleport(position);
