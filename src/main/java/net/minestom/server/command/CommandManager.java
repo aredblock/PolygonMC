@@ -40,11 +40,8 @@ public final class CommandManager {
     public CommandManager() {
     }
 
-    /**
-     * @param commandRegistry
-     */
-    public void registerCommandRegistry(@NotNull CommandRegistry commandRegistry) {
-        var methods = Arrays.stream(commandRegistry.getClass().getDeclaredMethods()).toList();
+    public void registerCommandRegistry(@NotNull Object object){
+        var methods = Arrays.stream(object.getClass().getDeclaredMethods()).toList();
 
         for (Method method : methods) {
             if (method.isAnnotationPresent(RegisterCommand.class)) {
@@ -58,7 +55,7 @@ public final class CommandManager {
 
                 command.setDefaultExecutor((commandSender, commandContext) -> {
                     try {
-                        method.invoke(commandRegistry,
+                        method.invoke(object,
                                 new CommandInput(commandSender, commandContext));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -68,6 +65,13 @@ public final class CommandManager {
                 MinecraftServer.getCommandManager().register(command);
             }
         }
+    }
+
+    /**
+     * @deprecated The CommandRegistry interface will be removed soon, please use registerCommandRegistry(@NotNull Object object)!
+     */
+    public void registerCommandRegistry(@NotNull CommandRegistry commandRegistry) {
+        registerCommandRegistry((Object) commandRegistry);
     }
 
     /**

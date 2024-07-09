@@ -3,10 +3,9 @@ package de.aredblock.polygonmc.server;
 import de.aredblock.polygonmc.commands.CommandInput;
 import de.aredblock.polygonmc.commands.CommandRegistry;
 import de.aredblock.polygonmc.commands.RegisterCommand;
-import de.aredblock.polygonmc.coordinate.Location;
 import de.aredblock.polygonmc.coordinate.Region;
-import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
+import de.aredblock.polygonmc.event.Subscribe;
 import de.aredblock.polygonmc.events.EventCalledEvent;
 import de.aredblock.polygonmc.vanilla.entity.FakePlayer;
 import de.aredblock.polygonmc.vanilla.schematic.Schematic;
@@ -21,7 +20,7 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.coordinate.Pos;
 import java.io.File;
 
-public final class MainDemo implements ListenerRegistry, CommandRegistry {
+public final class MainDemo {
 
     private static final Region spawnRegion = new Region(new Pos(-10, 30, -10), new Pos(10, 60, 10));
 
@@ -82,25 +81,20 @@ public final class MainDemo implements ListenerRegistry, CommandRegistry {
     }
 
     //EVENTS
-    @RegisterListener
+    @Subscribe
     public void onAsyncPlayerConfigurationEvent(AsyncPlayerConfigurationEvent event){
         final var player = event.getPlayer();
         event.setSpawningInstance(INSTANCE_CONTAINER);
         player.setRespawnPoint(new Pos(0, 42, 0).center());
     }
 
-    @RegisterListener
+    @Subscribe
     public void onPlayerBlockBreakEvent(PlayerBlockBreakEvent event){
         var pos = new Pos(event.getBlockPosition());
 
         if(spawnRegion.isInRegion(pos)){
             event.setCancelled(true);
         }
-    }
-
-    @RegisterListener
-    public void onEventCalledEvent(EventCalledEvent<?> event){
-        //System.out.println(event.getCalledEvent().getClass().getSimpleName());
     }
 
 }

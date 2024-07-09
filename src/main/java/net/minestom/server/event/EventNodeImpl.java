@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import de.aredblock.polygonmc.event.EventHandler;
 import de.aredblock.polygonmc.event.ListenerRegistry;
 import de.aredblock.polygonmc.event.RegisterListener;
+import de.aredblock.polygonmc.event.Subscribe;
 import de.aredblock.polygonmc.events.EventCalledEvent;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.ServerFlag;
@@ -134,16 +135,16 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
         return this;
     }
 
-    public EventNode<T> registerListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
-        var methods = Arrays.stream(listenerRegistry.getClass().getDeclaredMethods()).toList();
+    public EventNode<T> registerListenerRegistry(@NotNull Object object){
+        var methods = Arrays.stream(object.getClass().getDeclaredMethods()).toList();
 
         methods.forEach(method -> {
-            if(method.isAnnotationPresent(RegisterListener.class) || method.isAnnotationPresent(EventHandler.class)){
+            if(method.isAnnotationPresent(RegisterListener.class) || method.isAnnotationPresent(EventHandler.class) || method.isAnnotationPresent(Subscribe.class)){
                 var eventType = (Class<? extends T>) method.getParameters()[0].getType();
 
                 addListener(eventType, event -> {
                     try {
-                        method.invoke(listenerRegistry, event);
+                        method.invoke(object, event);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -154,10 +155,19 @@ non-sealed class EventNodeImpl<T extends Event> implements EventNode<T> {
         return this;
     }
 
+    /**
+     * @deprecated The ListenerRegistry interface will be removed soon, please use registerListenerRegistry(@NotNull Object object)!
+     */
+    @Deprecated
+    public EventNode<T> registerListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
+        return registerListenerRegistry((Object) listenerRegistry);
+    }
+
     /** Rather use registerEventRegistry() to avoid problems after the planned removal of this method
      * @deprecated This method will be removed in the next updates
      */
-    public @Deprecated EventNode<T> addListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
+    @Deprecated
+    public EventNode<T> addListenerRegistry(@NotNull ListenerRegistry listenerRegistry){
         return registerListenerRegistry(listenerRegistry);
     }
 
